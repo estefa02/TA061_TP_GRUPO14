@@ -1,10 +1,9 @@
-import numpy as np
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
-from tensorflow.keras.models import load_model
+import pickle
 
 #Cargamos el modelo
-model = load_model('modelo_criptomonedas.h5')
+with open('/home/estefano/Escritorio/FIUBA/Ap. automatico/TP/modelos/modelo_svc.pkl', 'rb') as archivo:
+    model = pickle.load(archivo)
 
 def predecir_btc(date,open,high,low,close):
 
@@ -31,7 +30,6 @@ def preprocesar(data):
 
     #Agregamos target
     data['date'] = pd.to_datetime(data['date'])
-    data['target'] = (data['mean_day'] > data['mean_day'].shift(1)).astype(int)
 
     #Agregamos variacion
     data['daily_variation'] = (data['high'] - data['low']) / data['mean_day']
@@ -47,4 +45,3 @@ def preprocesar(data):
     data = data.drop(columns=['date'])
 
     return data
-    
